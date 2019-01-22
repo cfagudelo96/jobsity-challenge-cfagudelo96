@@ -4,18 +4,18 @@ export const DELETE_CLIP = 'DELETE_CLIP';
 
 export const createClip = clip => ({
   type: CREATE_CLIP,
-  payload: clip,
+  payload: clip
 });
 
 export const updateClip = (clipId, clip) => ({
   type: UPDATE_CLIP,
   payload: {
     id: clipId,
-    clip,
+    clip
   },
 });
 
 export const deleteClip = clipId => ({
   type: DELETE_CLIP,
-  payload: clipId,
+  payload: clipId
 });

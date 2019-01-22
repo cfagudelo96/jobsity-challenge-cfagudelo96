@@ -2,6 +2,9 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { createStore } from 'redux';
+import { persistStore, persistReducer } from 'redux-persist';
+import { PersistGate } from 'redux-persist/integration/react';
+import storage from 'redux-persist/lib/storage';
 import { devToolsEnhancer } from 'redux-devtools-extension/logOnlyInProduction';
 
 import 'bootstrap/dist/css/bootstrap.css';
@@ -30,15 +33,26 @@ const getPreloadedState = () => {
   };
 };
 
+const persistConfig = {
+  key: 'root',
+  storage,
+};
+
+const persistedReducer = persistReducer(persistConfig, reducers);
+
 const store = createStore(
-  reducers,
+  persistedReducer,
   getPreloadedState(),
   devToolsEnhancer({ name: 'clipapp' })
 );
 
+const persistor = persistStore(store);
+
 ReactDOM.render(
   <Provider store={store}>
-    <App />
+    <PersistGate loading={null} persistor={persistor}>
+      <App />
+    </PersistGate>
   </Provider>,
   document.getElementById('root')
 );

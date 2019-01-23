@@ -20,7 +20,7 @@ class Clip extends Component {
 
   onEditClip() {
     const { openEditClipForm, clip } = this.props;
-    openEditClipForm(clip.id);
+    openEditClipForm(clip);
   }
 
   onDeleteClip() {

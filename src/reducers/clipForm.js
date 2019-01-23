@@ -9,7 +9,7 @@ const clipForm = (state = { showing: false }, action) => {
     case OPEN_EDIT_CLIP_FORM:
       return {
         showing: true,
-        clipId: action.payload
+        clip: action.payload
       };
     case CLOSE_CLIP_FORM:
       return {

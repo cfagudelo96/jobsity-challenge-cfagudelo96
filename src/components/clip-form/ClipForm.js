@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Field, reduxForm, SubmissionError } from 'redux-form';
+import { Field, reduxForm, initialize, SubmissionError } from 'redux-form';
 import {
   Modal, ModalHeader, ModalBody, ModalFooter,
 } from 'reactstrap';
@@ -58,6 +58,22 @@ class ClipForm extends Component {
     this.onClipFormSubmit = this.onClipFormSubmit.bind(this);
   }
 
+  componentDidUpdate(prevProps, prevState, snapshot) {
+    if (prevProps.clipForm.clip !== this.props.clipForm.clip) {
+      this.initializeValues();
+    }
+  }
+
+  initializeValues() {
+    const { initialize } = this.props;
+    if (this.isCreatingNewClip()) {
+      initialize('ClipForm', { });
+    } else {
+      const { clipForm: { clip }} = this.props;
+      initialize('ClipForm', clip);
+    }
+  }
+
   validateValues(values) {
     const { video } = this.props;
     if (values.startTime > video.duration) {
@@ -75,16 +91,16 @@ class ClipForm extends Component {
       const newClip = { ...values, id: nextClipId };
       createClip(newClip);
     } else {
-      const { clipForm: { clipId } } = this.props;
-      const clip = { ...values, id: clipId };
-      updateClip(clipId, clip);
+      const { clipForm: { clip } } = this.props;
+      const editedClip = { ...values, id: clip.id };
+      updateClip(clip.id, editedClip);
     }
     reset();
     closeClipForm();
   }
 
   isCreatingNewClip() {
-    return typeof this.props.clipForm.clipId === 'undefined';
+    return typeof this.props.clipForm.clip === 'undefined';
   }
 
   onDiscard() {
@@ -149,17 +165,15 @@ class ClipForm extends Component {
   }
 }
 
-const mapStateToProps = (state) => {
-  return {
-    nextClipId: state.clips.nextClipId,
-    clipForm: state.clipForm,
-    video: state.video,
-  };
-};
+const mapStateToProps = state => ({
+  nextClipId: state.clips.nextClipId,
+  clipForm: state.clipForm,
+  video: state.video
+});
 
 export default reduxForm({
   form: 'ClipForm',
   validate
 })(
-  connect(mapStateToProps, { createClip, updateClip, closeClipForm })(ClipForm),
+  connect(mapStateToProps, { initialize, createClip, updateClip, closeClipForm })(ClipForm)
 );

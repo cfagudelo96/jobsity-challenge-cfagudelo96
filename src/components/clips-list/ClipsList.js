@@ -33,7 +33,7 @@ class ClipsList extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    clips: state.clips
+    clips: state.clips.entities
   };
 };
 

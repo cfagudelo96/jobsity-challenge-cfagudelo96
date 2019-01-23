@@ -5,6 +5,7 @@ import { createStore } from 'redux';
 import { persistStore, persistReducer } from 'redux-persist';
 import { PersistGate } from 'redux-persist/integration/react';
 import storage from 'redux-persist/lib/storage';
+import hardSet from 'redux-persist/lib/stateReconciler/hardSet'
 import { devToolsEnhancer } from 'redux-devtools-extension/logOnlyInProduction';
 
 import 'bootstrap/dist/css/bootstrap.css';
@@ -28,14 +29,14 @@ const getPreloadedState = () => {
 
   return {
     video: defaultVideo,
-    clips: { 0: defaultClip },
-    selectedClip: 0
+    clips: { ids: [0], entities: { 0: defaultClip }, nextClipId: 1, selectedClipId: 0 }
   };
 };
 
 const persistConfig = {
   key: 'root',
   storage,
+  stateReconciler: hardSet
 };
 
 const persistedReducer = persistReducer(persistConfig, reducers);

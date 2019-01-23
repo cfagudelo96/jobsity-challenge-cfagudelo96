@@ -29,8 +29,8 @@ class Clip extends Component {
   }
 
   isSelectedClip() {
-    const { selectedClip, clip } = this.props;
-    return clip.id === selectedClip;
+    const { selectedClipId, clip } = this.props;
+    return clip.id === selectedClipId;
   }
 
   isFirstClip() {
@@ -56,7 +56,7 @@ class Clip extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    selectedClip: state.selectedClip
+    selectedClipId: state.clips.selectedClipId
   };
 };
 

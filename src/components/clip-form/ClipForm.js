@@ -150,13 +150,10 @@ class ClipForm extends Component {
 }
 
 const mapStateToProps = (state) => {
-  const hasInitialValues = state.clipForm && state.clipForm.clipId && state.clips;
-  const initialValues = hasInitialValues ? state.clips[state.clipForm.clipId] : null;
   return {
-    nextClipId: state.nextClipId,
+    nextClipId: state.clips.nextClipId,
     clipForm: state.clipForm,
     video: state.video,
-    initialValues: initialValues
   };
 };
 
